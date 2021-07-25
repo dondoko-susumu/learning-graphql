@@ -9,6 +9,7 @@ require('dotenv').config()
 var typeDefs = readFileSync('./typeDefs.graphql', 'UTF-8')
 
 async function start() {
+  // express()を呼び出し Express アプリケーションを作成する
   const app = express()
   const MONGO_DB = process.env.DB_HOST
   let db
@@ -38,15 +39,18 @@ async function start() {
     }
   })
 
+  // applyMiddleware() を呼び出し Express にミドルウェアを追加する
   server.applyMiddleware({ app })
 
   app.get('/playground', expressPlayground({ endpoint: '/graphql' }))
 
+  // ホームルートを作成する
   app.get('/', (req, res) => {
     let url = `https://github.com/login/oauth/authorize?client_id=${process.env.CLIENT_ID}&scope=user`
     res.end(`<a href="${url}">Sign In with Github</a>`)
   })
 
+  // 特定のポートでリッスンする
   app.listen({ port: 4000 }, () =>
     console.log(`GraphQL Server running at http://localhost:4000${server.graphqlPath}`)
   )
