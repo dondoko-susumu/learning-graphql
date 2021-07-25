@@ -35,6 +35,7 @@ module.exports = {
 
   async githubAuth(parent, { code }, { db }) {
 
+    // GitHubからデータを取得する
     let {
       message,
       access_token,
@@ -47,10 +48,12 @@ module.exports = {
       code
     })
 
+    // メッセージがある場合は何らかのエラーが発生している
     if (message) {
       throw new Error(message)
     }
 
+    // データをひとつのオブジェクトにまとめる
     let latestUserInfo = {
       name,
       githubLogin: login,
@@ -58,10 +61,12 @@ module.exports = {
       avatar: avatar_url
     }
 
+    // 新しい情報を元にレコードを追加したり更新したりする
     const { ops:[user] } = await db
       .collection('users')
       .replaceOne({ githubLogin: login }, latestUserInfo, { upsert: true })
 
+    // ユーザーデータとtokenを返す
     return { user, token: access_token }
   
   },

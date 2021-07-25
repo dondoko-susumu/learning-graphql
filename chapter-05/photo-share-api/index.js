@@ -8,6 +8,7 @@ const resolvers = require('./resolvers')
 require('dotenv').config()
 var typeDefs = readFileSync('./typeDefs.graphql', 'UTF-8')
 
+// 非同期関数を作成
 async function start() {
   // express()を呼び出し Express アプリケーションを作成する
   const app = express()
@@ -24,7 +25,6 @@ async function start() {
       please add DB_HOST environment variable to .env file
 
       exiting...
-       
     `)
     process.exit(1)
   }
@@ -56,4 +56,5 @@ async function start() {
   )
 }
 
+// start関数を実行
 start()
